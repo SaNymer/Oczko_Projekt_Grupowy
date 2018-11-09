@@ -9,7 +9,7 @@ public class DebugDealer : MonoBehaviour
 
     void OnGUI()
     {
-        if (GUI.Button(new Rect(10, 10 ,256, 28), "Hit Me"))
+        if (GUI.Button(new Rect(10, 10, 256, 28), "Hit Me"))
         {
             int card = dealer.Pop();
             player.Push(card);

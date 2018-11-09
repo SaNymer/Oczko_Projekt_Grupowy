@@ -46,6 +46,36 @@ public class CardStack : MonoBehaviour
         }
 	}
 
+    public int HandValue()
+    {
+        int total = 0;
+        int aces = 0;
+
+        foreach (int card in GetCards())
+        {
+            int cardRank = card % 13;
+
+            if (cardRank == 0) // Aces
+                aces++;
+            else if (cardRank <= 9) // Normal numbers
+                cardRank += 1;
+            else               // Jack, Queen, King
+                cardRank = 10;
+
+            total += cardRank;
+        }
+
+        for (int i = 0; i < aces; i++)
+        {
+            if (total + 11 <= 21)
+                total += 11;
+            else
+                total += 1;
+        }
+
+        return total;
+    }
+
     public IEnumerable<int> GetCards()
     {
         foreach (int i in cards)
