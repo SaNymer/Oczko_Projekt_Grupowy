@@ -6,7 +6,7 @@ using UnityEngine;
 public class CardStackView : MonoBehaviour
 {
     CardStack deck;
-    Dictionary<int, GameObject> fetchedCards;
+    Dictionary<int, CardView> fetchedCards;
     int lastCount;
 
     public Vector3 start;
@@ -14,21 +14,35 @@ public class CardStackView : MonoBehaviour
     public float cardOffset;
     public bool faceUp = false;
 
-	void Start()
+    public void Toggle(int card, bool isFaceUp)
     {
-        fetchedCards = new Dictionary<int, GameObject>();
+        fetchedCards[card].IsFaceUp = isFaceUp;
+    }
+
+	void Awake()
+    {
+        fetchedCards = new Dictionary<int, CardView>();
         deck = GetComponent<CardStack>();
         ShowCards();
         lastCount = deck.CardCount;
 
         deck.CardRemoved += Deck_CardRemoved;
+        deck.CardAdded += Deck_CardAdded;
     }
 
-    private void Deck_CardRemoved(object sender, CardRemovedEventArgs e)
+    private void Deck_CardAdded(object sender, CardEventArgs e)
+    {
+        float co = cardOffset * deck.CardCount;
+        Vector3 temp = start + new Vector3(co, 0f);
+
+        AddCard(temp, e.CardIndex, deck.CardCount);
+    }
+
+    private void Deck_CardRemoved(object sender, CardEventArgs e)
     {
         if (fetchedCards.ContainsKey(e.CardIndex))
         {
-            Destroy(fetchedCards[e.CardIndex]);
+            Destroy(fetchedCards[e.CardIndex].Card);
             fetchedCards.Remove(e.CardIndex);
         }
     }
@@ -63,7 +77,15 @@ public class CardStackView : MonoBehaviour
     void AddCard(Vector3 position, int cardIndex, int positionalIndex)
     {
         if (fetchedCards.ContainsKey(cardIndex))
+        {
+            if (!faceUp)
+            {
+                CardModel model = fetchedCards[cardIndex].Card.GetComponent<CardModel>();
+                model.ToggleFace(fetchedCards[cardIndex].IsFaceUp);
+            }
+
             return;
+        }
 
         GameObject cardCopy = (GameObject)Instantiate(cardPrefab);
         cardCopy.transform.position = position;
@@ -75,6 +97,6 @@ public class CardStackView : MonoBehaviour
         SpriteRenderer spriteRenderer = cardCopy.GetComponent<SpriteRenderer>();
         spriteRenderer.sortingOrder = positionalIndex;
 
-        fetchedCards.Add(cardIndex, cardCopy);
+        fetchedCards.Add(cardIndex, new CardView(cardCopy));
     }
 }
