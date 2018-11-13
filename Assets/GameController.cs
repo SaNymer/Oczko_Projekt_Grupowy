@@ -11,6 +11,10 @@ public class GameController : MonoBehaviour
 
     public Button hitButton;
     public Button stickButton;
+    public Button playAgainButton;
+
+    public Text winnerText;
+    public Text handValueText;
 
     // Cards dealt to each player
     // First player hits/sticks/bust
@@ -20,11 +24,13 @@ public class GameController : MonoBehaviour
     public void Hit()
     {
         player.Push(deck.Pop());
+        handValueText.text = "Hand value: " + player.HandValue();
         if (player.HandValue() > 21)
         {
-            // player busted
             hitButton.interactable = false;
             stickButton.interactable = false;
+
+            StartCoroutine(DealersTurn());
         }
     }
 
@@ -36,6 +42,21 @@ public class GameController : MonoBehaviour
         StartCoroutine(DealersTurn());
     }
 
+    public void PlayAgain()
+    {
+        playAgainButton.interactable = false;
+        hitButton.interactable = true;
+        stickButton.interactable = true;
+        winnerText.text = "";
+
+        player.GetComponent<CardStackView>().Clear();
+        dealer.GetComponent<CardStackView>().Clear();
+        deck.GetComponent<CardStackView>().Clear();
+
+        deck.CreateDeck();
+        StartGame();
+    }
+
     void Start()
     {
         StartGame();
@@ -45,7 +66,7 @@ public class GameController : MonoBehaviour
     {
         for (int i = 0; i < 2; i++)
         {
-            player.Push(deck.Pop());
+            Hit();
             HitDealer();
         }
     }
@@ -65,10 +86,34 @@ public class GameController : MonoBehaviour
 
     IEnumerator DealersTurn()
     {
+        hitButton.interactable = false;
+        stickButton.interactable = false;
+
+        // AI
         while (dealer.HandValue() < 17)
         {
             HitDealer();
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(1f);
         }
+
+        // Set winner
+        if (!player.instaWin && ( player.HandValue() > 21 || (dealer.HandValue() >= player.HandValue() && dealer.HandValue() <= 21))) // Dealer wins
+        {
+            winnerText.text = "You LOST!";
+        }
+        else if (!dealer.instaWin && (dealer.HandValue() > 21 || (player.HandValue() >= dealer.HandValue() && player.HandValue() <= 21))) // Player wins
+        {
+            winnerText.text = "You WON!";
+        }
+        else
+        {
+            // Draw
+            winnerText.text = "DRAW!";
+        }
+
+        // Show all hidden cards
+
+        yield return new WaitForSeconds(1f);
+        playAgainButton.interactable = true;
     }
 }

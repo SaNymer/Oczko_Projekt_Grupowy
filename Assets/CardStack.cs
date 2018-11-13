@@ -11,6 +11,7 @@ public class CardStack : MonoBehaviour
     public bool HasCards { get { return cards != null && cards.Count > 0; } }
     public bool isGameDeck;
     public int CardCount { get { return cards == null ? 0 : cards.Count; } }
+    public bool instaWin { get; private set; }
 
     public event CardEventHandler CardRemoved;
     public event CardEventHandler CardAdded;
@@ -41,6 +42,7 @@ public class CardStack : MonoBehaviour
 	void Awake ()
     {
         cards = new List<int>();
+        instaWin = false;
         if (isGameDeck)
         {
             CreateDeck();
@@ -56,23 +58,25 @@ public class CardStack : MonoBehaviour
         {
             int cardRank = card % 13;
 
-            if (cardRank == 0) // Aces
+            if (cardRank == 0)          // Aces
+            {
+                cardRank += 11;
                 aces++;
-            else if (cardRank <= 9) // Normal numbers
+            }
+            else if (cardRank <= 9)     // Normal numbers
                 cardRank += 1;
-            else               // Jack, Queen, King
-                cardRank = 10;
+            else if (cardRank == 10)    // Jack
+                cardRank = 2;
+            else if (cardRank == 11)    // Queen
+                cardRank = 3;
+            else                        // King
+                cardRank = 4;
 
             total += cardRank;
         }
 
-        for (int i = 0; i < aces; i++)
-        {
-            if (total + 11 <= 21)
-                total += 11;
-            else
-                total += 1;
-        }
+        if (total == 21 || aces == 2)
+            instaWin = true;
 
         return total;
     }
@@ -106,5 +110,10 @@ public class CardStack : MonoBehaviour
         {
             CardAdded(this, new CardEventArgs(card));
         }
+    }
+
+    public void Reset()
+    {
+        cards.Clear();
     }
 }

@@ -99,4 +99,16 @@ public class CardStackView : MonoBehaviour
 
         fetchedCards.Add(cardIndex, new CardView(cardCopy));
     }
+
+    public void Clear()
+    {
+        deck.Reset();
+
+        foreach (CardView view in fetchedCards.Values)
+        {
+            Destroy(view.Card);
+        }
+
+        fetchedCards.Clear();
+    }
 }
