@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviour
 {
     public CardStack player;
-    public CardStack dealer;
+    public CardStack opponent1;
+    public CardStack opponent2;
+    public CardStack opponent3;
     public CardStack deck;
 
     public Button hitButton;
@@ -14,23 +16,24 @@ public class GameController : MonoBehaviour
     public Button playAgainButton;
 
     public Text winnerText;
-    public Text handValueText;
+    public Text playerHandValueText;
+    public Text opponent1HandValueText;
+    public Text opponent2HandValueText;
+    public Text opponent3HandValueText;
+
 
     // Cards dealt to each player
     // First player hits/sticks/bust
     // Dealer's turn; must have minimum 17 score hand
     // Dealer cards; first card is hidden, subsequent cards are facing
-	
+
     public void Hit()
     {
         player.Push(deck.Pop());
-        handValueText.text = "Hand value: " + player.HandValue();
-        if (player.HandValue() > 21)
+        playerHandValueText.text = "Hand value: " + player.HandValue;
+        if (player.HandValue > 21)
         {
-            hitButton.interactable = false;
-            stickButton.interactable = false;
-
-            StartCoroutine(DealersTurn());
+            Stick();
         }
     }
 
@@ -39,7 +42,7 @@ public class GameController : MonoBehaviour
         hitButton.interactable = false;
         stickButton.interactable = false;
         // Dealer
-        StartCoroutine(DealersTurn());
+        StartCoroutine(OpponentsTurn());
     }
 
     public void PlayAgain()
@@ -50,7 +53,9 @@ public class GameController : MonoBehaviour
         winnerText.text = "";
 
         player.GetComponent<CardStackView>().Clear();
-        dealer.GetComponent<CardStackView>().Clear();
+        opponent1.GetComponent<CardStackView>().Clear();
+        opponent2.GetComponent<CardStackView>().Clear();
+        opponent3.GetComponent<CardStackView>().Clear();
         deck.GetComponent<CardStackView>().Clear();
 
         deck.CreateDeck();
@@ -67,41 +72,53 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < 2; i++)
         {
             Hit();
-            HitDealer();
+            HitOpponent(opponent1);
+            HitOpponent(opponent2);
+            HitOpponent(opponent3);
         }
+
+        playerHandValueText.text = "Hand value: " + player.HandValue;
+        opponent1HandValueText.text = "";
+        opponent2HandValueText.text = "";
+        opponent3HandValueText.text = "";
     }
 
-    void HitDealer()
+    void HitOpponent(CardStack opponent)
     {
         int card = deck.Pop();
-        dealer.Push(card);
-
-        // While opponent turn we can show hit cards
-        //if (dealer.CardCount >= 2)
-        //{
-        //    CardStackView view = dealer.GetComponent<CardStackView>();
-        //    view.Toggle(card, true);
-        //}
+        opponent.Push(card);
     }
 
-    IEnumerator DealersTurn()
+    IEnumerator OpponentsTurn()
     {
-        hitButton.interactable = false;
-        stickButton.interactable = false;
-
         // AI
-        while (dealer.HandValue() < 17)
-        {
-            HitDealer();
-            yield return new WaitForSeconds(1f);
-        }
+        //while (opponent1.HandValue < 17)
+        //{
+        //    HitOpponent(opponent1);
+        //    yield return new WaitForSeconds(1f);
+        //}
+
+        //while (opponent2.HandValue < 17)
+        //{
+        //    HitOpponent(opponent2);
+        //    yield return new WaitForSeconds(1f);
+        //}
+
+        //while (opponent3.HandValue < 17)
+        //{
+        //    HitOpponent(opponent3);
+        //    yield return new WaitForSeconds(1f);
+        //}
+        yield return RunAI(opponent1);
+        yield return RunAI(opponent2);
+        yield return RunAI(opponent3);
 
         // Set winner
-        if (!player.instaWin && ( player.HandValue() > 21 || (dealer.HandValue() >= player.HandValue() && dealer.HandValue() <= 21))) // Dealer wins
+        if (player.HandValue > 21 || (opponent2.HandValue >= player.HandValue && opponent2.HandValue <= 21)) // Dealer wins
         {
             winnerText.text = "You LOST!";
         }
-        else if (!dealer.instaWin && (dealer.HandValue() > 21 || (player.HandValue() >= dealer.HandValue() && player.HandValue() <= 21))) // Player wins
+        else if (opponent2.HandValue > 21 || (player.HandValue >= opponent2.HandValue && player.HandValue <= 21)) // Player wins
         {
             winnerText.text = "You WON!";
         }
@@ -112,8 +129,34 @@ public class GameController : MonoBehaviour
         }
 
         // Show all hidden cards
+        ShowOpponentCards(opponent1);
+        ShowOpponentCards(opponent2);
+        ShowOpponentCards(opponent3);
+
+        opponent1HandValueText.text = "Hand value: " + opponent1.HandValue;
+        opponent2HandValueText.text = "Hand value: " + opponent2.HandValue;
+        opponent3HandValueText.text = "Hand value: " + opponent3.HandValue;
 
         yield return new WaitForSeconds(1f);
         playAgainButton.interactable = true;
+    }
+
+    IEnumerator RunAI(CardStack opponent)
+    {
+        while (opponent.HandValue < 17)
+        {
+            HitOpponent(opponent);
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
+    void ShowOpponentCards(CardStack opponent)
+    {
+        CardStackView view = opponent.GetComponent<CardStackView>();
+        foreach (int card in opponent.GetCards())
+        {
+            view.Toggle(card, true);
+        }
+        view.ShowCards();
     }
 }

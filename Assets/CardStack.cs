@@ -11,7 +11,10 @@ public class CardStack : MonoBehaviour
     public bool HasCards { get { return cards != null && cards.Count > 0; } }
     public bool isGameDeck;
     public int CardCount { get { return cards == null ? 0 : cards.Count; } }
-    public bool instaWin { get; private set; }
+    //public bool instaWin { get; private set; }
+    public bool? WinStatus { get; private set; }
+
+    public int HandValue { get; private set; }
 
     public event CardEventHandler CardRemoved;
     public event CardEventHandler CardAdded;
@@ -42,14 +45,14 @@ public class CardStack : MonoBehaviour
 	void Awake ()
     {
         cards = new List<int>();
-        instaWin = false;
+        WinStatus = null;
         if (isGameDeck)
         {
             CreateDeck();
         }
 	}
 
-    public int HandValue()
+    int CalculateHandValue()
     {
         int total = 0;
         int aces = 0;
@@ -76,7 +79,9 @@ public class CardStack : MonoBehaviour
         }
 
         if (total == 21 || aces == 2)
-            instaWin = true;
+            WinStatus = true;
+        else if (total > 21)
+            WinStatus = false;
 
         return total;
     }
@@ -105,6 +110,7 @@ public class CardStack : MonoBehaviour
     public void Push(int card)
     {
         cards.Add(card);
+        HandValue = CalculateHandValue();
 
         if (CardAdded != null)
         {

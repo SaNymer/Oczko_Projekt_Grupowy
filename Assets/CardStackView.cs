@@ -13,6 +13,7 @@ public class CardStackView : MonoBehaviour
     public GameObject cardPrefab;
     public float cardOffset;
     public bool faceUp = false;
+    public bool isHorizontal = true;
 
     public void Toggle(int card, bool isFaceUp)
     {
@@ -32,10 +33,7 @@ public class CardStackView : MonoBehaviour
 
     private void Deck_CardAdded(object sender, CardEventArgs e)
     {
-        float co = cardOffset * deck.CardCount;
-        Vector3 temp = start + new Vector3(co, 0f);
-
-        AddCard(temp, e.CardIndex, deck.CardCount);
+        AddCard(CalculateNextCardPosition(deck.CardCount), e.CardIndex, deck.CardCount);
     }
 
     private void Deck_CardRemoved(object sender, CardEventArgs e)
@@ -56,7 +54,7 @@ public class CardStackView : MonoBehaviour
         }
     }
 
-    void ShowCards()
+    public void ShowCards()
     {
         int cardCount = 0;
 
@@ -65,10 +63,7 @@ public class CardStackView : MonoBehaviour
 
         foreach (int i in deck.GetCards())
         {
-            float co = cardOffset * cardCount;
-
-            Vector3 temp = start + new Vector3(co, 0f);
-            AddCard(temp, i, cardCount);
+            AddCard(CalculateNextCardPosition(cardCount), i, cardCount);
 
             cardCount++;
         }
@@ -96,6 +91,8 @@ public class CardStackView : MonoBehaviour
 
         SpriteRenderer spriteRenderer = cardCopy.GetComponent<SpriteRenderer>();
         spriteRenderer.sortingOrder = positionalIndex;
+        if (!isHorizontal)
+            spriteRenderer.transform.Rotate(0, 0, 90);
 
         fetchedCards.Add(cardIndex, new CardView(cardCopy));
     }
@@ -110,5 +107,18 @@ public class CardStackView : MonoBehaviour
         }
 
         fetchedCards.Clear();
+    }
+
+    Vector3 CalculateNextCardPosition(int cardCount)
+    {
+        float co = cardOffset * cardCount;
+
+        Vector3 newPos = start;
+        if (isHorizontal)
+            newPos += new Vector3(co, 0f);
+        else
+            newPos += new Vector3(0f, -co);
+
+        return newPos;
     }
 }
