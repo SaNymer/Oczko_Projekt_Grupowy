@@ -64,6 +64,7 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
+        Screen.SetResolution(1366, 600, false);
         StartGame();
     }
 
