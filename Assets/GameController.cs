@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -64,6 +66,7 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
+        Screen.SetResolution(1366, 600, false);
         StartGame();
     }
 
@@ -92,41 +95,25 @@ public class GameController : MonoBehaviour
     IEnumerator OpponentsTurn()
     {
         // AI
-        //while (opponent1.HandValue < 17)
-        //{
-        //    HitOpponent(opponent1);
-        //    yield return new WaitForSeconds(1f);
-        //}
-
-        //while (opponent2.HandValue < 17)
-        //{
-        //    HitOpponent(opponent2);
-        //    yield return new WaitForSeconds(1f);
-        //}
-
-        //while (opponent3.HandValue < 17)
-        //{
-        //    HitOpponent(opponent3);
-        //    yield return new WaitForSeconds(1f);
-        //}
         yield return RunAI(opponent1);
         yield return RunAI(opponent2);
         yield return RunAI(opponent3);
 
         // Set winner
-        if (player.HandValue > 21 || (opponent2.HandValue >= player.HandValue && opponent2.HandValue <= 21)) // Dealer wins
-        {
-            winnerText.text = "You LOST!";
-        }
-        else if (opponent2.HandValue > 21 || (player.HandValue >= opponent2.HandValue && player.HandValue <= 21)) // Player wins
-        {
-            winnerText.text = "You WON!";
-        }
-        else
-        {
-            // Draw
-            winnerText.text = "DRAW!";
-        }
+        //if (player.HandValue > 21 || (opponent2.HandValue >= player.HandValue && opponent2.HandValue <= 21)) // Dealer wins
+        //{
+        //    winnerText.text = "You LOST!";
+        //}
+        //else if (opponent2.HandValue > 21 || (player.HandValue >= opponent2.HandValue && player.HandValue <= 21)) // Player wins
+        //{
+        //    winnerText.text = "You WON!";
+        //}
+        //else
+        //{
+        //    // Draw
+        //    winnerText.text = "DRAW!";
+        //}
+        SetWinner();
 
         // Show all hidden cards
         ShowOpponentCards(opponent1);
@@ -137,16 +124,23 @@ public class GameController : MonoBehaviour
         opponent2HandValueText.text = "Hand value: " + opponent2.HandValue;
         opponent3HandValueText.text = "Hand value: " + opponent3.HandValue;
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0f);
         playAgainButton.interactable = true;
     }
 
     IEnumerator RunAI(CardStack opponent)
     {
-        while (opponent.HandValue < 17)
+
+        while (opponent.HandValue < 21)
         {
+            var chanceToHit = (int)Math.Pow(21 - opponent.HandValue, 2)*2 - 2;
+            var rand = new System.Random();
+
+            if (chanceToHit < rand.Next(0, 100) || chanceToHit <= 0)
+                break;
+
             HitOpponent(opponent);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0f);
         }
     }
 
@@ -158,5 +152,30 @@ public class GameController : MonoBehaviour
             view.Toggle(card, true);
         }
         view.ShowCards();
+    }
+
+    void SetWinner()
+    {
+        var handValues = new List<int>(){ opponent1.HandValue, opponent2.HandValue, opponent3.HandValue };
+        var validHandValues = new List<int>() { 0 }; // We add 0 so the list won't be ever empty and Max method won't crash
+        for (int i = 0; i < handValues.Count; i++)
+        {
+            if (handValues[i] <= 21)
+                validHandValues.Add(handValues[i]);
+        }
+        var maxHandValue = validHandValues.Max();
+
+        if ((player.WinStatus && (opponent1.WinStatus || opponent2.WinStatus || opponent3.WinStatus)) || player.HandValue == maxHandValue)
+        {
+            winnerText.text = "DRAW!";
+        }
+        else if (player.WinStatus || (player.HandValue > maxHandValue && player.HandValue <= 21) || (player.HandValue <= 21 && maxHandValue == 0))
+        {
+            winnerText.text = "You WON!";
+        }
+        else
+        {
+            winnerText.text = "You LOST!";
+        }
     }
 }
