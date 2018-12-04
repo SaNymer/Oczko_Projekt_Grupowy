@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
@@ -22,12 +23,20 @@ public class GameController : MonoBehaviour
     public Text opponent1HandValueText;
     public Text opponent2HandValueText;
     public Text opponent3HandValueText;
+    public Text scoreValue;
 
+    private int score;
 
-    // Cards dealt to each player
-    // First player hits/sticks/bust
-    // Dealer's turn; must have minimum 17 score hand
-    // Dealer cards; first card is hidden, subsequent cards are facing
+    public void Awake()
+    {
+        score = 0;
+    }
+
+    public void Exit()
+    {
+        SceneManager.LoadScene("MainMenu");
+        // Zapis wyniku
+    }
 
     public void Hit()
     {
@@ -84,6 +93,7 @@ public class GameController : MonoBehaviour
         opponent1HandValueText.text = "";
         opponent2HandValueText.text = "";
         opponent3HandValueText.text = "";
+        scoreValue.text = "Score: " + score;
     }
 
     void HitOpponent(CardStack opponent)
@@ -99,20 +109,6 @@ public class GameController : MonoBehaviour
         yield return RunAI(opponent2);
         yield return RunAI(opponent3);
 
-        // Set winner
-        //if (player.HandValue > 21 || (opponent2.HandValue >= player.HandValue && opponent2.HandValue <= 21)) // Dealer wins
-        //{
-        //    winnerText.text = "You LOST!";
-        //}
-        //else if (opponent2.HandValue > 21 || (player.HandValue >= opponent2.HandValue && player.HandValue <= 21)) // Player wins
-        //{
-        //    winnerText.text = "You WON!";
-        //}
-        //else
-        //{
-        //    // Draw
-        //    winnerText.text = "DRAW!";
-        //}
         SetWinner();
 
         // Show all hidden cards
@@ -172,10 +168,12 @@ public class GameController : MonoBehaviour
         else if (player.WinStatus || (player.HandValue > maxHandValue && player.HandValue <= 21) || (player.HandValue <= 21 && maxHandValue == 0))
         {
             winnerText.text = "You WON!";
+            score++;
         }
         else
         {
             winnerText.text = "You LOST!";
+            score--;
         }
     }
 }
