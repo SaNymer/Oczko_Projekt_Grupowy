@@ -11,8 +11,7 @@ public class CardStack : MonoBehaviour
     public bool HasCards { get { return cards != null && cards.Count > 0; } }
     public bool isGameDeck;
     public int CardCount { get { return cards == null ? 0 : cards.Count; } }
-    //public bool instaWin { get; private set; }
-    public bool? WinStatus { get; private set; }
+    public bool WinStatus { get; private set; }
 
     public int HandValue { get; private set; }
 
@@ -45,7 +44,7 @@ public class CardStack : MonoBehaviour
 	void Awake ()
     {
         cards = new List<int>();
-        WinStatus = null;
+        WinStatus = false;
         if (isGameDeck)
         {
             CreateDeck();
