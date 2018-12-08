@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -34,8 +35,12 @@ public class GameController : MonoBehaviour
 
     public void Exit()
     {
+        using (var writer = new StreamWriter("scores.txt", true))
+        {
+            writer.WriteLine(SharedData.playerName + "\t" + score);
+        }
+
         SceneManager.LoadScene("MainMenu");
-        // Zapis wyniku
     }
 
     public void Hit()
