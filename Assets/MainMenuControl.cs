@@ -18,4 +18,9 @@ public class MainMenuControl : MonoBehaviour
         SharedData.playerName = PlayerNameInput.text;
         SceneManager.LoadScene("BlackJackGame");
     }
+
+    public void ShowRanking()
+    {
+        SceneManager.LoadScene("RankingScene");
+    }
 }
