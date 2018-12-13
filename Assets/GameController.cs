@@ -30,14 +30,25 @@ public class GameController : MonoBehaviour
 
     public void Awake()
     {
-        score = 0;
+        score = SharedData.playerScore.Score;
     }
 
     public void Exit()
     {
         using (var writer = new StreamWriter("scores.txt", true))
         {
-            writer.WriteLine(SharedData.playerName + "\t" + score);
+            writer.WriteLine(SharedData.playerScore.Name + "\t" + score);
+        }
+
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void SaveAndExit()
+    {
+        using (var writer = new StreamWriter("savedGame.txt"))
+        {
+            writer.WriteLine(SharedData.playerScore.Name);
+            writer.WriteLine(score);
         }
 
         SceneManager.LoadScene("MainMenu");

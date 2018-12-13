@@ -8,7 +8,7 @@ Test7	123
 Test8	-15
 Test9	99
 Test10	22
-Test11	1020	0
+Test11	1020
 Player	0
 Player	0
 Player	1

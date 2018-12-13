@@ -1,4 +1,6 @@
-﻿public static class SharedData
+﻿using Assets;
+
+public static class SharedData
 {
-    public static string playerName;
+    public static PlayerScore playerScore;
 }
