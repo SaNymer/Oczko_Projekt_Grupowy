@@ -13,7 +13,7 @@ public class MainMenuControl : MonoBehaviour
 
     public void Awake()
     {
-        SharedData.playerScore = new PlayerScore();
+        SharedData.thisPlayer = new Player();
         PlayerNameInput.text = "Player";
 
         LoadGameButton.interactable = File.Exists("savedGame.txt");
@@ -21,8 +21,15 @@ public class MainMenuControl : MonoBehaviour
 
     public void StartSinglePlayerGame()
     {
-        SharedData.playerScore.Name = PlayerNameInput.text;
+        SharedData.thisPlayer.Name = PlayerNameInput.text;
+        SharedData.thisPlayer.Id = 0;
         SceneManager.LoadScene("BlackJackGame");
+    }
+
+    public void StartMultiplayerGame()
+    {
+        SharedData.thisPlayer.Name = PlayerNameInput.text;
+        SceneManager.LoadScene("MultiplayerScene");
     }
 
     public void ShowRanking()
@@ -34,8 +41,8 @@ public class MainMenuControl : MonoBehaviour
     {
         using (var reader = new StreamReader("savedGame.txt"))
         {
-            SharedData.playerScore.Name = reader.ReadLine();
-            SharedData.playerScore.Score = int.Parse(reader.ReadLine());
+            SharedData.thisPlayer.Name = reader.ReadLine();
+            SharedData.thisPlayer.Score = int.Parse(reader.ReadLine());
 
             SceneManager.LoadScene("BlackJackGame");
         }

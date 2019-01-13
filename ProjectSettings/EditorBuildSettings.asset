@@ -14,3 +14,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/RankingScene.unity
     guid: ee09cb706b277134a9ef102bbfd754c2
+  - enabled: 1
+    path: Assets/Scenes/ClientScene.unity
+    guid: fd8b87b2f267bb34f869fa5588f375f2
+  - enabled: 1
+    path: Assets/Scenes/MultiplayerScene.unity
+    guid: e954e555adf1c3a449b42351c1eeba8f
+  - enabled: 1
+    path: Assets/Scenes/ServerScene.unity
+    guid: 7810f7923496ea241989632148f8d478

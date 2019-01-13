@@ -32,7 +32,7 @@ public class CardStack : MonoBehaviour
 
         while (cards.Count > 0)
         {
-            int index = rand.Next(0, cards.Count - 1);
+            int index = rand.Next(0, cards.Count);
             int cardNumber = cards[index];
             shuffledDeck.Add(cardNumber);
             cards.RemoveAt(index);
@@ -41,7 +41,7 @@ public class CardStack : MonoBehaviour
         cards = shuffledDeck;
     }
 
-	void Awake ()
+    void Awake ()
     {
         cards = new List<int>();
         WinStatus = false;

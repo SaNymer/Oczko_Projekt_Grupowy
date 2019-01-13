@@ -14,25 +14,21 @@ public class RankingControl : MonoBehaviour
 
     public void Awake()
     {
-        var scores = new List<PlayerScore>();
+        var scores = new List<Player>();
 
         using (var reader = new StreamReader("scores.txt"))
         {
-            int counter = 1;
-
-            while (!reader.EndOfStream && counter <= 10)
+            while (!reader.EndOfStream)
             {
                 var line = reader.ReadLine();
                 var nameAndScore = line.Split('\t');
-                scores.Add(new PlayerScore(nameAndScore[0], int.Parse(nameAndScore[1])));
-
-                counter++;
+                scores.Add(new Player(nameAndScore[0], int.Parse(nameAndScore[1])));
             }
         }
 
         scores = scores.OrderByDescending(x => x.Score).ToList();
 
-        for (int i = 1; i <= scores.Count; i++)
+        for (int i = 1; i <= scores.Count && i <= 10; i++)
         {
             NamesText.text += i + ". " + scores[i-1].Name + "\n";
             ScoresText.text += scores[i-1].Score + "\n";
