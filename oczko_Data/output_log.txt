@@ -1,47 +1,40 @@
 Initialize engine version: 5.6.2f1 (a2913c821e27)
 GfxDevice: creating device client; threaded=1
 Direct3D:
-    Version:  Direct3D 11.0 [level 11.0]
-    Renderer: NVIDIA GeForce GTX 660M (ID=0xfd4)
-    Vendor:   NVIDIA
-    VRAM:     1989 MB
-    Driver:   21.21.13.7654
+    Version:  Direct3D 11.0 [level 10.0]
+    Renderer: VMware SVGA 3D (ID=0x405)
+    Vendor:   VMWare
+    VRAM:     515 MB
+    Driver:   8.15.1.50
 Begin MonoManager ReloadAssembly
-Platform assembly: B:\Projekty\UnityProjects\Oczko\Oczko\oczko_Data\Managed\UnityEngine.dll (this message is harmless)
-Loading B:\Projekty\UnityProjects\Oczko\Oczko\oczko_Data\Managed\UnityEngine.dll into Unity Child Domain
-Platform assembly: B:\Projekty\UnityProjects\Oczko\Oczko\oczko_Data\Managed\Assembly-CSharp.dll (this message is harmless)
-Loading B:\Projekty\UnityProjects\Oczko\Oczko\oczko_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
-Platform assembly: B:\Projekty\UnityProjects\Oczko\Oczko\oczko_Data\Managed\UnityEngine.UI.dll (this message is harmless)
-Loading B:\Projekty\UnityProjects\Oczko\Oczko\oczko_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-Platform assembly: B:\Projekty\UnityProjects\Oczko\Oczko\oczko_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
-Loading B:\Projekty\UnityProjects\Oczko\Oczko\oczko_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
-- Completed reload, in  0.026 seconds
-Platform assembly: B:\Projekty\UnityProjects\Oczko\Oczko\oczko_Data\Managed\System.Core.dll (this message is harmless)
-Platform assembly: B:\Projekty\UnityProjects\Oczko\Oczko\oczko_Data\Managed\System.dll (this message is harmless)
+Platform assembly: C:\Users\Agata\Desktop\Oczko\Oczko_Projekt_Grupowy\Oczko_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Agata\Desktop\Oczko\Oczko_Projekt_Grupowy\Oczko_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Agata\Desktop\Oczko\Oczko_Projekt_Grupowy\Oczko_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Agata\Desktop\Oczko\Oczko_Projekt_Grupowy\Oczko_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\Agata\Desktop\Oczko\Oczko_Projekt_Grupowy\Oczko_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\Agata\Desktop\Oczko\Oczko_Projekt_Grupowy\Oczko_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\Agata\Desktop\Oczko\Oczko_Projekt_Grupowy\Oczko_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\Agata\Desktop\Oczko\Oczko_Projekt_Grupowy\Oczko_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+- Completed reload, in  0.274 seconds
+Platform assembly: C:\Users\Agata\Desktop\Oczko\Oczko_Projekt_Grupowy\Oczko_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\Agata\Desktop\Oczko\Oczko_Projekt_Grupowy\Oczko_Data\Managed\System.dll (this message is harmless)
 <RI> Initializing input.
+XInput1_3.dll not found. Trying XInput9_1_0.dll instead...
 <RI> Input initialized.
-desktop: 1366x768 60Hz; virtual: 1366x768 at 0,0
+desktop: 2560x1600 60Hz; virtual: 2560x1600 at 0,0
 <RI> Initialized touch support.
-UnloadTime: 3.084234 ms
+UnloadTime: 1.938600 ms
 Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 7.805620 ms
+UnloadTime: 7.158900 ms
 
-Unloading 5 unused Assets to reduce memory usage. Loaded Objects now: 284.
-Total: 0.437613 ms (FindLiveObjects: 0.036125 ms CreateObjectMapping: 0.032431 ms MarkObjects: 0.346068 ms  DeleteObjects: 0.021757 ms)
+Unloading 5 unused Assets to reduce memory usage. Loaded Objects now: 423.
+Total: 0.369300 ms (FindLiveObjects: 0.034100 ms CreateObjectMapping: 0.018800 ms MarkObjects: 0.296400 ms  DeleteObjects: 0.018800 ms)
 
-Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.710198 ms
+Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.978300 ms
 
-Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 294.
-Total: 0.388762 ms (FindLiveObjects: 0.032431 ms CreateObjectMapping: 0.031199 ms MarkObjects: 0.317331 ms  DeleteObjects: 0.006568 ms)
+Unloading 56 unused Assets to reduce memory usage. Loaded Objects now: 311.
+Total: 0.693500 ms (FindLiveObjects: 0.051700 ms CreateObjectMapping: 0.034600 ms MarkObjects: 0.460100 ms  DeleteObjects: 0.145300 ms)
 
-Log: cannot connect after {10} attempt address {::ffff:127.0.0.1:9999}
-Log: cannot connect after {10} attempt address {::ffff:172.16.134.128:9999}
-Log: cannot connect after {10} attempt address {::ffff:172.16.134.128:9999}
-Log: cannot connect after {10} attempt address {::ffff:127.0.0.1:9999}
-Log: cannot connect after {10} attempt address {::ffff:127.0.0.1:9999}
-Log: cannot connect after {10} attempt address {::ffff:192.168.1.10:9999}
-Log: cannot connect after {10} attempt address {::ffff:172.16.134.2:9999}
-Setting up 2 worker threads for Enlighten.
-  Thread -> id: 29a8 -> priority: 1 
-  Thread -> id: 1d34 -> priority: 1 
+Setting up 1 worker threads for Enlighten.
+  Thread -> id: 1b10 -> priority: 1 

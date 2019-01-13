@@ -172,7 +172,9 @@ public class GameController : MonoBehaviour
             {
                 writer.WriteLine(SharedData.thisPlayer.Name + "\t" + score);
             }
-
+        }
+        else
+        {
             if (SharedData.isServer)
             {
                 SharedData.serverConstrol.Disconnect();
